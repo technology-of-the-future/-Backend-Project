@@ -35,4 +35,36 @@ else {
 
 }
 
+CiudadesCtrl.login = async(req,res)=>{
+    const {correo,contrasena} = req.body
+    const ciudad = await Ciudad.findOne({correo:correo})
+    if(!ciudad){
+        return res.json({
+            mensaje: 'Correo incorrecto'
+        })
+    }
+
+    const match = await bcrypt.compare(contrasena, ciudad.contrasena)
+    if(match){
+
+        const token = jwt.sign({_id: ciudad._id}, 'Secreta')
+        res.json({
+            mensaje: 'Bienvenido',
+            id:ciudad.id,
+            nombre: ciudad.nombre,
+            token
+
+        })
+
+    }
+
+    else {
+        res.json({
+            mensaje: 'Contraseña incorrecta'
+        })
+
+
+    }
+}
+
 module.exports = CiudadesCtrl

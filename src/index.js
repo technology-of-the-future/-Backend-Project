@@ -15,6 +15,7 @@
  app.use(cors({origen: '*'}))
 
  app.use('/ciudad',require('./routes/Ciudad.route'))
+ app.use('/persona',require('./routes/Persona.route'))
 
 
  app.listen(app.get('Port'),()=>{
